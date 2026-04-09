@@ -1,0 +1,41 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  dockerRegistryServiceConnection: 'acr-connection'
+  imageRepository: 'voting-app'
+  containerRegistry: 'dummyacr.azurecr.io'
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build and Push Images
+  jobs:
+  - job: Build
+    steps:
+
+    # Install Docker
+    - task: DockerInstaller@0
+      inputs:
+        dockerVersion: 'latest'
+
+    # Build Vote App
+    - script: |
+        docker build -t $(containerRegistry)/vote:$(tag) ./vote
+        docker push $(containerRegistry)/vote:$(tag)
+      displayName: Build & Push Vote
+
+    # Build Result App
+    - script: |
+        docker build -t $(containerRegistry)/result:$(tag) ./result
+        docker push $(containerRegistry)/result:$(tag)
+      displayName: Build & Push Result
+
+    # Build Worker
+    - script: |
+        docker build -t $(containerRegistry)/worker:$(tag) ./worker
+        docker push $(containerRegistry)/worker:$(tag)
+      displayName: Build & Push Worker
