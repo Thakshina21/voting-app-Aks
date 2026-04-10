@@ -13,8 +13,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Login to ACR
-      run: echo ${{ secrets.ACR_PASSWORD }} | docker login ${{ secrets.ACR_LOGIN_SERVER }} -u ${{ secrets.ACR_USERNAME }} --password-stdin
+    - name: Login to ACR run: echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ secrets.ACR_LOGIN_SERVER }} -u ${{ secrets.ACR_USERNAME }} --password-stdin
 
     - name: Build Image
       run: |
