@@ -27,8 +27,8 @@ jobs:
         
     - name: Build Result Image
       run: |
-        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/result-app:latest ./result
+        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/result-app:v2 ./result
 
     - name: Push Result Image
       run: |
-        docker push ${{ secrets.ACR_LOGIN_SERVER }}/result-app:latest
+        docker push ${{ secrets.ACR_LOGIN_SERVER }}/result-app:v2
