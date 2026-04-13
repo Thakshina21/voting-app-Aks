@@ -24,3 +24,11 @@ jobs:
     - name: Push Image
       run: |
         docker push ${{ secrets.ACR_LOGIN_SERVER }}/vote-app:latest
+        
+    - name: Build Result Image
+      run: |
+        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/result-app:latest ./result
+
+    - name: Push Image
+      run: |
+        docker push ${{ secrets.ACR_LOGIN_SERVER }}/result-app:latest
