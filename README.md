@@ -16,6 +16,10 @@ The application consists of multiple services including vote, result, worker, Re
  
 Deployment Flow:
 GitHub → CI Pipeline → Docker Image → ACR → AKS → Application
+
+##  Architecture Diagram
+![Architecture](architecture.png)
+
  
 ## Tech Stack
  
