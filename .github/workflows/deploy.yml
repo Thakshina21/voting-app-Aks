@@ -1,0 +1,38 @@
+name: CI-CD Pipeline
+ 
+on:
+  push:
+    branches:
+      - main
+ 
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+ 
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+ 
+    - name: Login to ACR
+      run: az acr login --name thakshina123
+ 
+    - name: Build Docker Image
+      run: |
+        docker build -t thakshina123.azurecr.io/vote-app:${{ github.sha }} ./vote
+ 
+    - name: Push Docker Image
+      run: |
+        docker push thakshina123.azurecr.io/vote-app:${{ github.sha }}
+ 
+    - name: Set AKS Context
+      run: |
+        az aks get-credentials --resource-group aks-rg --name myAKSCluster --overwrite-existing
+ 
+    - name: Deploy to AKS
+      run: |
+        kubectl set image deployment/vote vote=thakshina123.azurecr.io/vote-app:${{ github.sha }}
